@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootbeer
+      POSTGRES_DB: food-timetable
+    volumes:
+      - lunch-scheduler-db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: adminer_container
+    image: adminer
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - 5555:8080
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  lunch-scheduler-db-data:
+  pgadmin:
